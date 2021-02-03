@@ -1,2 +1,2 @@
-# discoRd_bot
+# discoRd-bot
 `discoRd` discord server bot

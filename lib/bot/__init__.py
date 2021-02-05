@@ -82,7 +82,7 @@ class Bot(BotBase):
 				author_icon = self.guild.icon_url,
 				thumbnail = self.guild.icon_url,
 				image = self.guild.icon_url,
-				footer = "iamericfletcher - testing a footer"
+				footer = "iamericfletcher - testing a footer."
 			)
 
 			await channel.send(embed=embed)

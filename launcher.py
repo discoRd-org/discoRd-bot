@@ -1,6 +1,4 @@
-from lib.bot import bot
+from lib2.bot import bot
 
-self.VERSION = "0.0.2"
-
-#test
+self.VERSION = "0.0.1"
 

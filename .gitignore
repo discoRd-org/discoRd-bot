@@ -136,3 +136,11 @@ dmypy.json
 lib/bot/token.0
 
 data/images/
+
+# virtualenv additions
+bin/
+lib/python3.9/
+pyvenv.cfg
+
+# IDE configurations
+.vscode/

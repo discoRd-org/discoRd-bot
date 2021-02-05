@@ -9,6 +9,7 @@ from lib.bot.create_embed import create_embed
 
 PREFIX = "+"
 
+
 class Bot(BotBase):
 	def __init__(self):
 		self.PREFIX = PREFIX
@@ -29,7 +30,6 @@ class Bot(BotBase):
 
 		print("running bot...")
 		super().run(self.TOKEN, reconnect=True)
-		
 
 	async def on_connect(self):
 		print("bot connected!")
@@ -94,5 +94,6 @@ class Bot(BotBase):
 
 	async def on_message(self, message):
 		pass
+
 
 bot = Bot()

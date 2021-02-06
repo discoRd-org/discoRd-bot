@@ -2,6 +2,7 @@ from discord import	Intents
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from discord.ext.commands import Bot as BotBase
+from discord.ext.commands import Context
 from discord.ext.commands import CommandNotFound
 from discord import Intents
 from discord import File
@@ -10,9 +11,10 @@ from lib.bot.create_embed import create_embed
 from glob import glob
 from asyncio import sleep
 
+
 from ..db import db
 
-PREFIX = "+"
+PREFIX = "$"
 # Goes through the directory and return any .py file
 COGS = [path.split("/")[-1][:-3] for path in glob("./lib/cogs/*.py")]
 
@@ -64,6 +66,17 @@ class Bot(BotBase):
 		print("running bot...")
 		super().run(self.TOKEN, reconnect=True)
 
+	# Don't allow commands to be sent until the bot is ready.
+	async def process_commands(self, message):
+		ctx = await self.get_context(message, cls=Context)
+
+		if ctx.command is not None and ctx.guild is not None:
+			if self.ready:
+				await self.invoke(ctx)
+
+			else:
+				await ctx.send("I am not ready to receive commands. Please wait a few seconds.")
+
 	async def rules_reminder(self):
 		await self.stdout.send("I am a timed notification!")
 
@@ -74,6 +87,7 @@ class Bot(BotBase):
 		print("bot disconnected")
 
 	async def on_error(self, err, *args, **kwargs):
+
 		if err == "on_command_error":
 			await args[0].send("Something went wrong.")
 
@@ -86,9 +100,6 @@ class Bot(BotBase):
 		if isinstance(exc, CommandNotFound):
 			pass
 
-		elif hasattr(exc, "original"):
-			raise exc.original
-
 		else:
 			raise exc
 
@@ -96,7 +107,7 @@ class Bot(BotBase):
 		if not self.ready:
 			self.guild = self.get_guild(806626416783130674)
 			self.stdout = self.get_channel(806950823396769883)
-			self.scheduler.add_job(self.rules_reminder, CronTrigger(second="0,15,30,45"))
+			self.scheduler.add_job(self.rules_reminder, CronTrigger(minute=59))
 			self.scheduler.start()
 
 			# fields = [
@@ -133,7 +144,8 @@ class Bot(BotBase):
 			print("bot reconnected")
 
 	async def on_message(self, message):
-		pass
+		if not message.author.bot:
+			await self.process_commands(message)
 
 
 bot = Bot()

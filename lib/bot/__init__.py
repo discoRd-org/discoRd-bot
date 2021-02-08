@@ -10,7 +10,7 @@ from lib.bot.create_embed import create_embed
 from glob import glob
 from asyncio import sleep
 from discord.errors import HTTPException, Forbidden
-from discord.ext.commands import (CommandNotFound, BadArgument, MissingRequiredArgument)
+from discord.ext.commands import (CommandNotFound, BadArgument, MissingRequiredArgument, CommandOnCooldown)
 
 from ..db import db
 
@@ -101,20 +101,24 @@ class Bot(BotBase):
 		if any([isinstance(exc, error) for error in IGNORE_EXCEPTIONS]):
 			pass
 
-		elif isinstance(exc, BadArgument):
-			pass
-
 		elif isinstance(exc, MissingRequiredArgument):
-			await ctx.send("One or more required arguments are missing.")
+			await ctx.send("One of more required arguments are missing.")
 
-		elif isinstance(exc.original, HTTPException):
-			await ctx.send("Unable to send message")
+		elif isinstance(exc, CommandOnCooldown):
+			await ctx.send(f"That command is on {str(exc.cooldown.type).split('.')[-1]} cooldown. Try again in"
+						   f" {exc.retry_after:,.2f} secs.")
 
-		elif isinstance(exc.original, Forbidden):
-			await ctx.send("I do not have permission to do that.")
+		elif hasattr(exc, "original"):
+			# elif isinstance(exc.original, HTTPException):
+			# 		# 	await ctx.send("Unable to send message")
 
+			if isinstance(exc.original, Forbidden):
+				await ctx.send("I do not have permission to do that.")
+
+			else:
+				raise exc.original
 		else:
-			raise exc.original
+			raise exc
 
 	async def on_ready(self):
 		if not self.ready:

@@ -13,7 +13,7 @@ from lib.bot.create_embed import create_embed
 from lib.db import db
 
 # Bot command prefix
-PREFIX = "+"
+PREFIX = "$"
 
 class Bot(BotBase):
     def __init__(self):
@@ -70,7 +70,7 @@ class Bot(BotBase):
             self.ready = True
             self.scheduler.add_job(self.print_message, CronTrigger(second="0,15,30,45"))
             self.scheduler.start()
-            
+
             # Set server-specific bot using server ID
             # Can leave this out for multi-server bot
             self.guild = self.get_guild(806626416783130674)

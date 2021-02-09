@@ -14,6 +14,10 @@ from lib.db import db
 
 # Bot command prefix
 PREFIX = "$"
+# Avoid magic numbers
+SERVER_ID = 806626416783130674
+CHANNEL_TEST = 806950823396769883
+
 
 class Bot(BotBase):
     def __init__(self):
@@ -39,7 +43,7 @@ class Bot(BotBase):
 
     # Print message for scheduled job
     async def print_message(self):
-        channel = self.get_channel(806950823396769883)
+        channel = self.get_channel(CHANNEL_TEST)
         await channel.send("This is a timed notification")
 
     async def on_connect(self):
@@ -53,7 +57,7 @@ class Bot(BotBase):
         if err == "on_command_error":
             await args[0].send("Something went wrong.")
 
-        channel = self.get_channel(806950823396769883)
+        channel = self.get_channel(CHANNEL_TEST)
         await channel.send("An error occured.")
 
     # Command error event handling
@@ -73,11 +77,11 @@ class Bot(BotBase):
 
             # Set server-specific bot using server ID
             # Can leave this out for multi-server bot
-            self.guild = self.get_guild(806626416783130674)
+            self.guild = self.get_guild(SERVER_ID)
             print("bot ready")
 
             # Set channel using channel ID
-            channel = self.get_channel(806950823396769883)
+            channel = self.get_channel(CHANNEL_TEST)
             await channel.send("Now online!")
 
             # # Create and send embed to channel

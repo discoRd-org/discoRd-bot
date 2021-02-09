@@ -43,8 +43,8 @@ class Bot(BotBase):
 
     # Print message for scheduled job
     async def print_message(self):
-        channel = self.get_channel(CHANNEL_TEST)
-        await channel.send("This is a timed notification")
+        channel_test = self.get_channel(CHANNEL_TEST)
+        await channel_test.send("This is a timed notification")
 
     async def on_connect(self):
         print("bot connected!")
@@ -57,8 +57,8 @@ class Bot(BotBase):
         if err == "on_command_error":
             await args[0].send("Something went wrong.")
 
-        channel = self.get_channel(CHANNEL_TEST)
-        await channel.send("An error occured.")
+        channel_test = self.get_channel(CHANNEL_TEST)
+        await channel_test.send("An error occured.")
 
     # Command error event handling
     async def on_command_error(self, ctx, exception):
@@ -80,9 +80,9 @@ class Bot(BotBase):
             self.guild = self.get_guild(SERVER_ID)
             print("bot ready")
 
-            # Set channel using channel ID
-            channel = self.get_channel(CHANNEL_TEST)
-            await channel.send("Now online!")
+            # Set channel_test using channel ID
+            channel_test = self.get_channel(CHANNEL_TEST)
+            await channel_test.send("Now online!")
 
             # # Create and send embed to channel
             # fields = [
@@ -104,7 +104,7 @@ class Bot(BotBase):
             #     footer = "testing a footer"
             # )
 
-            # await channel.send(embed=embed)
+            # await channel_test.send(embed=embed)
 
         else:
             print("bot reconnected")

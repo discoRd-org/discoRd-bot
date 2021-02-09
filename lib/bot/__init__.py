@@ -10,6 +10,7 @@ from discord import Intents
 from discord import File
 from datetime import datetime
 from lib.bot.create_embed import create_embed
+from lib.bot.idle_reminder import idle_reminder
 from lib.db import db
 
 # Bot command prefix
@@ -17,6 +18,9 @@ PREFIX = "$"
 # Avoid magic numbers
 SERVER_ID = 806626416783130674
 CHANNEL_TEST = 806950823396769883
+# If the last message sent in a channel was longer than this number of minutes,
+# the idle reminder will send the reminder
+IDLE_REMINDER_MINUTES = 5
 
 
 class Bot(BotBase):
@@ -42,9 +46,10 @@ class Bot(BotBase):
         super().run(self.TOKEN, reconnect=True)
 
     # Print message for scheduled job
-    async def print_message(self):
-        channel_test = self.get_channel(CHANNEL_TEST)
-        await channel_test.send("This is a timed notification")
+    async def idle_reminder(self, minutes):
+        # TODO create an embed and pass it to the function:
+        # embed = create_embed()
+        await idle_reminder(self.get_channel(CHANNEL_TEST), minutes)
 
     async def on_connect(self):
         print("bot connected!")
@@ -72,7 +77,10 @@ class Bot(BotBase):
     async def on_ready(self):
         if not self.ready:
             self.ready = True
-            self.scheduler.add_job(self.print_message, CronTrigger(second="0,15,30,45"))
+            # Checks every minute
+            self.scheduler.add_job(self.idle_reminder,
+                                   CronTrigger(second="0"),
+                                   [IDLE_REMINDER_MINUTES])
             self.scheduler.start()
 
             # Set server-specific bot using server ID

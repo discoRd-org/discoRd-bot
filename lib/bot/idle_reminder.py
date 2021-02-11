@@ -16,11 +16,13 @@ async def idle_reminder(channel, wait_minutes, embed):
     """
     print("Running idle_reminder()")
 
-    now_time = datetime.now(tz=timezone.utc)
     last_message = await channel.history(limit=1).flatten()
-    last_time = last_message[0].created_at.replace(tzinfo=timezone.utc)
-    wait_time = timedelta(minutes=wait_minutes)
-    delta = now_time - last_time
 
-    if delta > wait_time:
-        await channel.send(embed=embed)
+    if not last_message[0].author.bot:
+        now_time = datetime.now(tz=timezone.utc)
+        last_time = last_message[0].created_at.replace(tzinfo=timezone.utc)
+        wait_time = timedelta(minutes=wait_minutes)
+        delta = now_time - last_time
+
+        if delta > wait_time:
+            await channel.send(embed=embed)

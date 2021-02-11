@@ -1,11 +1,12 @@
 from discord import Embed
+from datetime import datetime
 
 def create_embed(
     title,
     description,
-    fields,
+    fields = None,
     colour = None,
-    timestamp = None,
+    timestamp = datetime.utcnow(),
     author = None,
     author_icon = None,
     thumbnail = None,
@@ -17,9 +18,9 @@ def create_embed(
     Args:
         title (str): Set title
         description (str): Set description
-        fields (tuple): Set fields
+        fields (list of tuples): Set fields
         colour (int, optional): Set color. Defaults to None.
-        timestamp (datetime, optional): Set timestamp. Defaults to None.
+        timestamp (datetime, optional): Set timestamp. Defaults to current time.
         author (str, optional): Set author. Defaults to None.
         author_icon (str, optional): Set author icon using image url. Defaults to None.
         thumbnail (str, optional): Set thumbnail using image url. Defaults to None.
@@ -37,8 +38,9 @@ def create_embed(
         timestamp=timestamp
     )
 
-    for name, value, inline in fields:
-        embed.add_field(name=name, value=value, inline=inline)
+    if fields is not None:
+        for name, value, inline in fields:
+            embed.add_field(name=name, value=value, inline=inline)
 
     embed.set_author(name=author, icon_url=author_icon)
     embed.set_footer(text=footer)

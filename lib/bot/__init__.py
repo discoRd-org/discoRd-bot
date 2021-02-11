@@ -18,12 +18,14 @@ PREFIX = "$"
 # Avoid magic numbers
 SERVER_ID = 806626416783130674
 CHANNEL_TEST = 806950823396769883
+CHANNEL_HELP_AVAILABLE = 809099330950529085
 # If the last message sent in a channel was longer than this number of minutes,
 # the idle reminder will send the reminder
 IDLE_REMINDER_MINUTES = 5
 
 
 class Bot(BotBase):
+
     def __init__(self):
         self.PREFIX = PREFIX
         self.ready = False
@@ -44,12 +46,6 @@ class Bot(BotBase):
 
         print("running bot...")
         super().run(self.TOKEN, reconnect=True)
-
-    # Print message for scheduled job
-    async def idle_reminder(self, minutes):
-        # TODO create an embed and pass it to the function:
-        # embed = create_embed()
-        await idle_reminder(self.get_channel(CHANNEL_TEST), minutes)
 
     async def on_connect(self):
         print("bot connected!")
@@ -77,15 +73,36 @@ class Bot(BotBase):
     async def on_ready(self):
         if not self.ready:
             self.ready = True
-            # Checks every minute
-            self.scheduler.add_job(self.idle_reminder,
-                                   CronTrigger(second="0"),
-                                   [IDLE_REMINDER_MINUTES])
-            self.scheduler.start()
-
             # Set server-specific bot using server ID
             # Can leave this out for multi-server bot
             self.guild = self.get_guild(SERVER_ID)
+
+            embed_help = create_embed(title=":question: How to ask a good question?",
+                                      description="""**A minimal reproducible question** (a.k.a. a good question) should consist of the following:
+
+                                      **1. A clear problem statement.** What are you trying to do? What have you tried? What is the expected output?
+                                      **2. The smallest data set necessary to reproduce the problem.** Hint: Use `dput` and **no screenshots**.
+                                      **3. All relevant code** that everyone can just copy and paste into their R console.
+                                      **4. Proper `formatting` of code blocks and data** if you copy and paste directly.
+                                      **5. All relevant packages** needed to reproduce your problem.
+                                      **6. All relevant error messages**. Don't just say that you got an error.
+
+                                      For more details, check out: `How to ask a good question? (Detailed)`""",
+                                      colour=0xFF0000,
+                                      author="discoRd-bot",
+                                      author_icon=self.guild.icon_url,
+                                      thumbnail=self.guild.icon_url,
+                                      image=self.guild.icon_url)
+
+            print("help embed was created")
+            # Add a job to the scheduler
+            self.scheduler.add_job(idle_reminder,
+                                   CronTrigger(second="0"),
+                                   [self.get_channel(CHANNEL_HELP_AVAILABLE),
+                                    IDLE_REMINDER_MINUTES,
+                                    embed_help])
+            self.scheduler.start()
+
             print("bot ready")
 
             # Set channel_test using channel ID

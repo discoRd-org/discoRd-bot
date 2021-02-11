@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta, timezone
 
-# TODO: Add an embed argument
-async def idle_reminder(channel, wait_minutes=5):
+
+async def idle_reminder(channel, wait_minutes, embed):
     """
     Checks if 'channel' has been idle for more than 'wait_minutes'
     minutes. If so, sends an embed to that channel.
@@ -23,7 +23,4 @@ async def idle_reminder(channel, wait_minutes=5):
     delta = now_time - last_time
 
     if delta > wait_time:
-        # await channel.send(embed = embed)
-        await channel.send("More than " + str(wait_time.seconds) +
-                           " seconds has passed " +
-                           "since the last message has been sent.")
+        await channel.send(embed=embed)

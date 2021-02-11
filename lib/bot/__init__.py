@@ -94,7 +94,6 @@ class Bot(BotBase):
                                       thumbnail=self.guild.icon_url,
                                       image=self.guild.icon_url)
 
-            print("help embed was created")
             # Add a job to the scheduler
             self.scheduler.add_job(idle_reminder,
                                    CronTrigger(second="0"),
@@ -108,28 +107,6 @@ class Bot(BotBase):
             # Set channel_test using channel ID
             channel_test = self.get_channel(CHANNEL_TEST)
             await channel_test.send("Now online!")
-
-            # # Create and send embed to channel
-            # fields = [
-            #     ("Name1", "Value1", True),
-            #     ("Name2", "Value2", True),
-            #     ("A longer Name", "A longer Value", False)
-            # ]
-
-            # embed = create_embed(
-            #     title = "Now online!",
-            #     description = "discoRd-bot is now online!",
-            #     colour = 0xFF0000,
-            #     timestamp = datetime.utcnow(),
-            #     fields = fields,
-            #     author = "discoRd-bot",
-            #     author_icon = self.guild.icon_url,
-            #     thumbnail = self.guild.icon_url,
-            #     image = self.guild.icon_url,
-            #     footer = "testing a footer"
-            # )
-
-            # await channel_test.send(embed=embed)
 
         else:
             print("bot reconnected")

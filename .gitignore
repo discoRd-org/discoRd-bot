@@ -144,3 +144,4 @@ pyvenv.cfg
 
 # IDE configurations
 .vscode/
+.dir-locals.el

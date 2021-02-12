@@ -22,7 +22,7 @@ CHANNEL_HELP_AVAILABLE = 809099330950529085
 # If the last message sent in a channel was longer than this number of minutes,
 # the idle reminder will send the reminder
 IDLE_REMINDER_MINUTES = 20
-
+IDLE_REMINDER_CRON_TIMER = {"second":"0", "minute":"0,10,20,30,40,50"}
 
 class Bot(BotBase):
 
@@ -96,7 +96,7 @@ class Bot(BotBase):
 
             # Add a job to the scheduler
             self.scheduler.add_job(idle_reminder,
-                                   CronTrigger(second="0", minute="0,10,20,30,40,50"),  # every 10 minutes
+                                   CronTrigger(**IDLE_REMINDER_CRON_TIMER),  # every 10 minutes
                                    [self.get_channel(CHANNEL_HELP_AVAILABLE),
                                     IDLE_REMINDER_MINUTES,
                                     embed_help])

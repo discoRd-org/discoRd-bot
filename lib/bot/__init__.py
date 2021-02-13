@@ -12,6 +12,8 @@ from lib.bot._on_disconnect import on_disconnect
 from lib.bot._on_message import on_message
 from lib.bot._on_error import on_error
 from lib.bot._on_command_error import on_command_error
+from lib.bot._process_commands import process_commands
+import lib.bot._commands as cmd  # Bot commands
 
 from lib.db import db  # Database
 import lib.constants as const  # Bot constants
@@ -46,6 +48,11 @@ class Bot(BotBase):
     on_command_error = on_command_error
     on_ready = on_ready
     on_message = on_message
+    process_commands = process_commands
+
+    # Bot commands
+    move_message = cmd.move_message
+    ping = cmd.ping
 
 
 # Create an instance of Bot

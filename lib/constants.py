@@ -9,3 +9,4 @@ CHANNEL_HELP_AVAILABLE = 809099330950529085
 IDLE_REMINDER_MINUTES = 20
 # Every 10 minutes
 IDLE_REMINDER_CRON_TIMER = {"second": "0", "minute": "0,10,20,30,40,50"}
+CHANNEL_MSG_HISTORY_LIMIT = 100  # Look up a maximum of this many past messages

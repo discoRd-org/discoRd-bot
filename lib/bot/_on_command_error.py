@@ -8,4 +8,4 @@ async def on_command_error(self, ctx, exception):
         pass
 
     else:
-        raise exception.original
+        raise exception

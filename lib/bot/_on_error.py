@@ -8,3 +8,4 @@ async def on_error(self, err, *args, **kwargs):
 
     channel_test = self.get_channel(const.CHANNEL_TEST)
     await channel_test.send("An error occured.")
+    raise(err)

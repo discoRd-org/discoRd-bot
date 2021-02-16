@@ -1,3 +1,6 @@
+from glob import glob
+import platform
+
 # Bot command prefix
 PREFIX = "$"
 # Avoid magic numbers
@@ -10,3 +13,9 @@ IDLE_REMINDER_MINUTES = 20
 # Every 10 minutes
 IDLE_REMINDER_CRON_TIMER = {"second": "0", "minute": "0,10,20,30,40,50"}
 CHANNEL_MSG_HISTORY_LIMIT = 100  # Look up a maximum of this many past messages
+if platform.system() == "Linux":
+    COGS = [path.split("/")[-1][:-3] for path in glob("./lib/cogs/*.py")]
+elif platform.system() == "Windows":
+    COGS = [path.split("\\")[-1][:-3] for path in glob("./lib/cogs/*.py")]
+else:
+    raise(RuntimeError("Unexpected operating system"))

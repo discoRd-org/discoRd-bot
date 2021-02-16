@@ -1,6 +1,5 @@
-from discord import Member, TextChannel, File
+from discord import Member, TextChannel
 from discord.ext.commands import Cog, command
-import tempfile
 import lib.constants as const
 
 
@@ -18,7 +17,7 @@ class GeneralCommand(Cog):
     @command(name="move")
     async def move_message(self, ctx, member: Member,
                            target_channel: TextChannel, num_msg: int = 1,
-                           copy: bool = False):
+                           copy: bool = True):
         """
         Copy/Move message(s), mentioning the author. Several messages will
         be consolidated to one message separated by a new line.
@@ -28,7 +27,7 @@ class GeneralCommand(Cog):
         num_msg(optional): Integer. How many user messages to move?
                            Defaults to 1.
         copy(optional): Bool. If True, the original messages will be deleted.
-                        Defaults to 'False'.
+                        Defaults to 'True'.
         """
         print("Running 'move' command")
 
@@ -47,20 +46,11 @@ class GeneralCommand(Cog):
 
         msg_to_move.reverse()  # Order messages collected from oldest to newest
         msg_all = ""
-        attachments_all = list()
         for msg in msg_to_move:
-            attachments_all.extend(msg.attachments)
             msg_all += msg.content + "\n"
 
         await target_channel.send(f"Original message by: {member.mention}")
         await target_channel.send(msg_all)
-
-        if attachments_all:
-            for att in attachments_all:
-                tmp = tempfile.TemporaryFile("w+b")
-                tmp.write(await att.read())
-                await target_channel.send(File(tmp, att.filename))
-                tmp.close()
 
         if not copy:
             for msg in msg_to_move:

@@ -7,6 +7,7 @@ PREFIX = "$"
 SERVER_ID = 806626416783130674
 CHANNEL_TEST = 806950823396769883
 CHANNEL_HELP_AVAILABLE = 809099330950529085
+EMBED_DEFAULT_FOOTER = "This is an automated message"
 # If the last message sent in a channel was longer than this number of minutes,
 # the idle reminder will send the reminder
 IDLE_REMINDER_MINUTES = 20

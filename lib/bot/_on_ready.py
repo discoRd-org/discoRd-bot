@@ -26,7 +26,8 @@ async def on_ready(self):
                                   author="discoRd-bot",
                                   author_icon=self.guild.icon_url,
                                   thumbnail=self.guild.icon_url,
-                                  image=self.guild.icon_url)
+                                  image=self.guild.icon_url,
+                                  footer=const.EMBED_DEFAULT_FOOTER)
 
         # Add a job to the scheduler
         self.scheduler.add_job(idle_reminder,

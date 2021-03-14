@@ -1,4 +1,5 @@
 from glob import glob
+from discord.ext.commands import CommandNotFound, CommandInvokeError
 import platform
 
 # Bot command prefix
@@ -14,6 +15,9 @@ IDLE_REMINDER_MINUTES = 20
 # Every 10 minutes
 IDLE_REMINDER_CRON_TIMER = {"second": "0", "minute": "0,10,20,30,40,50"}
 CHANNEL_MSG_HISTORY_LIMIT = 100  # Look up a maximum of this many past messages
+# Ignore these errors. Already defined as command specific errors
+IGNORED_EXCEPTIONS = (CommandNotFound, CommandInvokeError) 
+
 if platform.system() == "Linux":
     COGS = [path.split("/")[-1][:-3] for path in glob("./lib/cogs/*.py")]
 elif platform.system() == "Windows":

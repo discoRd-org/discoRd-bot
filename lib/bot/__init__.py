@@ -17,7 +17,7 @@ from lib.bot._process_commands import process_commands
 from lib.db import db  # Database
 import lib.constants as const  # Bot constants
 
-
+# Cogs Ready class 
 class Ready(object):
     def __init__(self):
         for cog in const.COGS:
@@ -36,7 +36,7 @@ class Bot(BotBase):
     def __init__(self):
         self.PREFIX = const.PREFIX
         self.ready = False
-        self.cogs_ready = Ready()
+        self.cogs_ready = Ready() # Instantiate cogs ready
         self.guild = None
         self.scheduler = AsyncIOScheduler()
 

@@ -1,31 +1,32 @@
+from typing import List, Tuple
 from discord import Embed
 from datetime import datetime
 
 def create_embed(
-    title,
-    description,
-    fields = None,
-    colour = None,
-    timestamp = datetime.utcnow(),
-    author = None,
-    author_icon = None,
-    thumbnail = None,
-    image = None,
-    footer = None
-):
+    title: str,
+    description: str,
+    fields: List[Tuple[str, str, bool]] = Embed.Empty,
+    colour: str = Embed.Empty,
+    timestamp: datetime = datetime.utcnow(),
+    author: str = Embed.Empty,
+    author_icon: str = Embed.Empty,
+    thumbnail: str = Embed.Empty,
+    image: str = Embed.Empty,
+    footer: str = Embed.Empty
+) -> Embed:
     """Create an Embed
 
     Args:
         title (str): Set title
         description (str): Set description
         fields (list of tuples): Set fields
-        colour (int, optional): Set color. Defaults to None.
+        colour (int, optional): Set color. Defaults to Embed.Empty.
         timestamp (datetime, optional): Set timestamp. Defaults to current time.
-        author (str, optional): Set author. Defaults to None.
-        author_icon (str, optional): Set author icon using image url. Defaults to None.
-        thumbnail (str, optional): Set thumbnail using image url. Defaults to None.
-        image (str, optional): Set image using image url. Defaults to None.
-        footer (str, optional): Set footer. Defaults to None.
+        author (str, optional): Set author. Defaults to Embed.Empty.
+        author_icon (str, optional): Set author icon using image url. Defaults to Embed.Empty.
+        thumbnail (str, optional): Set thumbnail using image url. Defaults to Embed.Empty.
+        image (str, optional): Set image using image url. Defaults to Embed.Empty.
+        footer (str, optional): Set footer. Defaults to Embed.Empty.
 
     Returns:
         embed: returns an embed
@@ -38,7 +39,7 @@ def create_embed(
         timestamp=timestamp
     )
 
-    if fields is not None:
+    if fields is not Embed.Empty and fields is not None:
         for name, value, inline in fields:
             embed.add_field(name=name, value=value, inline=inline)
 

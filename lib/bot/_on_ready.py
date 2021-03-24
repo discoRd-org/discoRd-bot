@@ -1,3 +1,4 @@
+from asyncio import sleep
 from apscheduler.triggers.cron import CronTrigger  # For scheduled tasks
 from lib.bot.create_embed import create_embed  # For embed creation
 from lib.bot.idle_reminder import idle_reminder  # To add as a scheduled job
@@ -6,7 +7,6 @@ import lib.constants as const
 
 async def on_ready(self):
     if not self.ready:
-        self.ready = True
         # Set server-specific bot using server ID
         # Can leave this out for multi-server bot
         self.guild = self.get_guild(const.SERVER_ID)
@@ -26,7 +26,8 @@ async def on_ready(self):
                                   author="discoRd-bot",
                                   author_icon=self.guild.icon_url,
                                   thumbnail=self.guild.icon_url,
-                                  image=self.guild.icon_url)
+                                  image=self.guild.icon_url,
+                                  footer=const.EMBED_DEFAULT_FOOTER)
 
         # Add a job to the scheduler
         self.scheduler.add_job(idle_reminder,
@@ -36,11 +37,15 @@ async def on_ready(self):
                                 embed_help])
         self.scheduler.start()
 
+        while not self.cogs_ready.all_ready():
+            await sleep(0.5)
+
+        self.ready = True
         print("bot ready")
 
         # Set channel_test using channel ID
         channel_test = self.get_channel(const.CHANNEL_TEST)
-        await channel_test.send("Now online!")
+        print("Now online!")
 
     else:
         print("bot reconnected")
